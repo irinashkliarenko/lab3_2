@@ -20,5 +20,13 @@ public class PublishableNewsForTests extends PublishableNews{
 		super.addForSubscription(content, subscriptionType);
 		subscriptionInfo.add(content);
 	}
+	
+    public List<String> getSubscriptionInfo() {
+        return subscriptionInfo;
+    }
+
+    public List<String> getPublicInfo() {
+        return publicInfo;
+    }
 
 }
