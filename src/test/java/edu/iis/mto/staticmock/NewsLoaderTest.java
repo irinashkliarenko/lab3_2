@@ -13,6 +13,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 import edu.iis.mto.staticmock.reader.NewsReader;
 import static org.junit.Assert.*;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 
 
@@ -23,6 +25,7 @@ public class NewsLoaderTest {
 	private NewsLoader newsLoader;
 	IncomingInfo incomingInfoPublic;
 	IncomingInfo incomingInfoForSubscribers;
+	String readerType;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -34,7 +37,7 @@ public class NewsLoaderTest {
         when(ConfigurationLoader.getInstance()).thenReturn(mockConfigurationLoader);
 
         Configuration configuration = new Configuration();
-        String readerType = "File";
+        readerType = "File";
         Whitebox.setInternalState(configuration, "readerType", readerType);
         when(mockConfigurationLoader.loadConfiguration()).thenReturn(configuration);
 
@@ -68,5 +71,11 @@ public class NewsLoaderTest {
         assertThat(testablePublishableNews.getSubscriptionInfo(), hasItem(incomingInfoForSubscribers.getContent()));
 
 	}
-
+	@Test
+	public void verifyIfDependencyIsTriggeredCorrectly() {
+		newsLoader.loadNews();
+		
+		verifyStatic(times(1));
+		NewsReaderFactory.getReader(readerType);	
+	}
 }
