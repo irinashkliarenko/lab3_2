@@ -1,28 +1,26 @@
 package edu.iis.mto.staticmock;
 
-import org.junit.Before;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+import static org.powermock.api.mockito.PowerMockito.verifyStatic;
+import static org.powermock.api.mockito.PowerMockito.when;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 import edu.iis.mto.staticmock.reader.NewsReader;
-import static org.junit.Assert.*;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
-import static org.powermock.api.mockito.PowerMockito.*;
-
-
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ConfigurationLoader.class, NewsReaderFactory.class})
+@PrepareForTest({ConfigurationLoader.class, PublishableNews.class, NewsReaderFactory.class})
 public class NewsLoaderTest {
-	private IncomingNews incomingNews = new IncomingNews();
-	private NewsLoader newsLoader;
+	public IncomingNews incomingNews = new IncomingNews();
+	public NewsLoader newsLoader;
 	IncomingInfo incomingInfoPublic;
 	IncomingInfo incomingInfoForSubscribers;
 	String readerType;
@@ -76,6 +74,6 @@ public class NewsLoaderTest {
 		newsLoader.loadNews();
 		
 		verifyStatic(times(1));
-		NewsReaderFactory.getReader(readerType);	
+		NewsReaderFactory.getReader(readerType);
 	}
 }
